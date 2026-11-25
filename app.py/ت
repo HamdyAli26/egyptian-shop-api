@@ -1,0 +1,23 @@
+from flask import Flask, jsonify, request
+app = Flask(__name__)
+products = [
+    {"id": 1, "name": "Cotton T-Shirt", "price": 350, "city": "Toukh"},
+    {"id": 2, "name": "Mobile Cover", "price": 150, "city": "Cairo"}
+]
+cart = []
+@app.route('/')
+def home():
+    return jsonify({"message": "Egyptian Shop API is running!"})
+@app.route('/products', methods=['GET'])
+def get_products():
+    return jsonify(products)
+@app.route('/cart', methods=['POST'])
+def add_to_cart():
+    data = request.json
+    cart.append(data)
+    return jsonify({"message": "Added to cart", "cart": cart})
+@app.route('/orders', methods=['POST'])
+def create_order():
+    return jsonify({"message": "Order created successfully", "status": "pending"})
+if __name__ == '__main__':
+    app.run(debug=True)
